@@ -1,0 +1,360 @@
+/* =============================================================================
+   globals.css — Zalo Chat Design System
+   Stack: Tailwind v4 + shadcn/ui + Multi-theme + Dark Mode
+   ============================================================================= */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ── Keyframes ───────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px);   opacity: 0.85; }
+  50%       { transform: translateY(-10px); opacity: 1;    }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50%       { transform: translateY(-16px) rotate(1deg); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--theme-primary,#0068FF) 40%, transparent); }
+  70%  { box-shadow: 0 0 0 12px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.animate-float      { animation: float      4s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+.animate-fade-in-up { animation: fade-in-up 0.4s ease-out both; }
+.animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+
+/* ── Dark mode variant: hỗ trợ cả class .dark VÀ attribute data-mode="dark" ── */
+@custom-variant dark (
+  &:is([data-mode="dark"] *),
+  &:is(.dark *),
+  &[data-mode="dark"],
+  &.dark
+);
+
+/* ── Tailwind v4: map CSS variables → utility classes ───────────────────────── */
+@theme inline {
+  /* Typography */
+  --font-sans:    var(--font-sans);
+  --font-mono:    var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+
+  /* Shadcn Color Tokens */
+  --color-background:          var(--background);
+  --color-foreground:          var(--foreground);
+  --color-card:                var(--card);
+  --color-card-foreground:     var(--card-foreground);
+  --color-popover:             var(--popover);
+  --color-popover-foreground:  var(--popover-foreground);
+  --color-primary:             var(--primary);
+  --color-primary-foreground:  var(--primary-foreground);
+  --color-secondary:           var(--secondary);
+  --color-secondary-foreground:var(--secondary-foreground);
+  --color-muted:               var(--muted);
+  --color-muted-foreground:    var(--muted-foreground);
+  --color-accent:              var(--accent);
+  --color-accent-foreground:   var(--accent-foreground);
+  --color-destructive:         var(--destructive);
+  --color-border:              var(--border);
+  --color-input:               var(--input);
+  --color-ring:                var(--ring);
+
+  /* Sidebar */
+  --color-sidebar:                    var(--sidebar);
+  --color-sidebar-foreground:         var(--sidebar-foreground);
+  --color-sidebar-primary:            var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:             var(--sidebar-accent);
+  --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
+  --color-sidebar-border:             var(--sidebar-border);
+  --color-sidebar-ring:               var(--sidebar-ring);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Zalo Custom Tokens */
+  --color-bubble-sent:          var(--bubble-sent);
+  --color-bubble-sent-text:     var(--bubble-sent-text);
+  --color-bubble-received:      var(--bubble-received);
+  --color-bubble-received-text: var(--bubble-received-text);
+
+  /* Radius Scale */
+  --radius-sm:  calc(var(--radius) * 0.6);
+  --radius-md:  calc(var(--radius) * 0.8);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* =============================================================================
+   THEME PRESETS — Primary Color (data-theme attribute)
+   Dùng: document.documentElement.setAttribute('data-theme', 'blue')
+   ============================================================================= */
+
+/* Default = blue (không cần attribute, fallback cho :root) */
+:root,
+[data-theme="blue"] {
+  --theme-primary:     #0068FF;
+  --theme-primary-h:   #3384FF;  /* hover */
+  --theme-primary-lt:  #D1E8FF;  /* light tint – bubble sent (light mode) */
+  --theme-primary-dk:  #1D4ED8;  /* dark tint – bubble sent (dark mode)   */
+}
+
+[data-theme="rose"] {
+  --theme-primary:    #F43F5E;
+  --theme-primary-h:  #FB7185;
+  --theme-primary-lt: #FFE4E6;
+  --theme-primary-dk: #BE123C;
+}
+
+[data-theme="green"] {
+  --theme-primary:    #10B981;
+  --theme-primary-h:  #34D399;
+  --theme-primary-lt: #D1FAE5;
+  --theme-primary-dk: #065F46;
+}
+
+[data-theme="orange"] {
+  --theme-primary:    #F97316;
+  --theme-primary-h:  #FB923C;
+  --theme-primary-lt: #FFEDD5;
+  --theme-primary-dk: #C2410C;
+}
+
+[data-theme="purple"] {
+  --theme-primary:    #8B5CF6;
+  --theme-primary-h:  #A78BFA;
+  --theme-primary-lt: #EDE9FE;
+  --theme-primary-dk: #5B21B6;
+}
+
+/* =============================================================================
+   LIGHT MODE (mặc định)
+   Tất cả shadcn tokens + Zalo tokens đều được định nghĩa tại đây
+   ============================================================================= */
+
+:root {
+  /* ── Shadcn Required Variables ── */
+  --background:          #FFFFFF;
+  --foreground:          #111827;
+  --card:                #FFFFFF;
+  --card-foreground:     #111827;
+  --popover:             #FFFFFF;
+  --popover-foreground:  #111827;
+
+  /* Primary lấy từ theme preset */
+  --primary:             var(--theme-primary);
+  --primary-foreground:  #FFFFFF;
+
+  --secondary:           #F7F8FA;
+  --secondary-foreground:#374151;
+  --muted:               #F7F8FA;
+  --muted-foreground:    #6B7280;
+  --accent:              #F0F5FF;
+  --accent-foreground:   #1D4ED8;
+  --destructive:         #EF4444;
+  --border:              #E5E7EB;
+  --input:               #F7F8FA;
+  --ring:                var(--theme-primary);
+  --radius:              0.625rem;
+
+  /* ── Sidebar (shadcn Sidebar component) ── */
+  --sidebar:                    var(--theme-primary);
+  --sidebar-foreground:         #FFFFFF;
+  --sidebar-primary:            rgba(255,255,255,0.15);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent:             rgba(255,255,255,0.12);
+  --sidebar-accent-foreground:  #FFFFFF;
+  --sidebar-border:             rgba(255,255,255,0.15);
+  --sidebar-ring:               rgba(255,255,255,0.4);
+
+  /* ── Chart Colors ── */
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+
+  /* ── Zalo Custom Chat Tokens (Light) ── */
+  --bubble-sent:          var(--theme-primary-lt);
+  --bubble-sent-text:     #0A1929;
+  --bubble-received:      #F1F5F9;
+  --bubble-received-text: #111827;
+
+  --bg-chat-window:   #FFFFFF;
+  --bg-chat-list:     #F7F8FA;
+  --bg-message-area:  #F0F2F5;
+
+  --online-dot:       #22C55E;
+}
+
+/* =============================================================================
+   DARK MODE
+   Áp dụng khi: <html data-mode="dark"> hoặc <html class="dark">
+   ============================================================================= */
+
+[data-mode="dark"],
+.dark {
+  /* ── Shadcn Required Variables ── */
+  --background:          #0D1117;
+  --foreground:          #CDD9E5;
+  --card:                #161B22;
+  --card-foreground:     #CDD9E5;
+  --popover:             #1C2128;
+  --popover-foreground:  #CDD9E5;
+
+  /* Primary vẫn lấy từ theme-primary nhưng nhạt hơn 1 bậc */
+  --primary:             var(--theme-primary-h, var(--theme-primary));
+  --primary-foreground:  #FFFFFF;
+
+  --secondary:           #21262D;
+  --secondary-foreground:#CDD9E5;
+  --muted:               #21262D;
+  --muted-foreground:    #768390;
+  --accent:              #1C2128;
+  --accent-foreground:   var(--theme-primary-h, #60A5FA);
+  --destructive:         #F87171;
+  --border:              #30363D;
+  --input:               #21262D;
+  --ring:                var(--theme-primary-h, var(--theme-primary));
+
+  /* ── Sidebar (dark mode — không dùng màu primary) ── */
+  --sidebar:                    #161B22;
+  --sidebar-foreground:         #8B949E;
+  --sidebar-primary:            var(--theme-primary);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent:             #21262D;
+  --sidebar-accent-foreground:  #CDD9E5;
+  --sidebar-border:             #30363D;
+  --sidebar-ring:               #30363D;
+
+  /* ── Chart Colors (dark) ── */
+  --chart-1: oklch(0.65 0.18 255);
+  --chart-2: oklch(0.60 0.20 260);
+  --chart-3: oklch(0.55 0.22 265);
+  --chart-4: oklch(0.50 0.20 264);
+  --chart-5: oklch(0.45 0.18 265);
+
+  /* ── Zalo Custom Chat Tokens (Dark) ── */
+  --bubble-sent:          var(--theme-primary-dk);
+  --bubble-sent-text:     #EFF6FF;
+  --bubble-received:      #2D333B;
+  --bubble-received-text: #CDD9E5;
+
+  --bg-chat-window:   #1C2128;
+  --bg-chat-list:     #161B22;
+  --bg-message-area:  #0D1117;
+
+  --online-dot:       #3FB950;
+}
+
+/* =============================================================================
+   BASE STYLES
+   ============================================================================= */
+
+@layer base {
+  * {
+    @apply border-border outline-none focus:outline-none focus:ring-0;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* =============================================================================
+   SCROLLBAR UTILITIES
+   ============================================================================= */
+
+textarea::-webkit-scrollbar,
+.scrollbar-hide::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Custom thin scrollbar cho message list */
+.scrollbar-thin::-webkit-scrollbar       { width: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* =============================================================================
+   MOTION TOKENS (System 10)
+   ============================================================================= */
+
+:root {
+  --motion-fast:     120ms;
+  --motion-base:     160ms;
+  --motion-slow:     200ms;
+  --ease-standard:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in:         cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:        cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Message fade-in animation */
+@keyframes messageIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)  scale(1);    }
+}
+.msg-animate { animation: messageIn var(--motion-base) var(--ease-out); }
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0%   { background-position: -200px 0; }
+  100% { background-position:  200px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--muted) 25%, var(--border) 37%, var(--muted) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* Typing indicator */
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+  40%           { transform: scale(1);   opacity: 1;   }
+}
+.typing-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  animation: typing 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* =============================================================================
+   RESPONSIVE UTILITIES (System 11)
+   ============================================================================= */
+
+/* Mobile: input font-size 16px prevents iOS zoom */
+@media (max-width: 768px) {
+  .chat-input-field { font-size: 16px; }
+  .message-bubble   { max-width: 85%; font-size: 14px; }
+}
+
+/* Tablet: chat window slide overlay */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .message-bubble { max-width: 78%; }
+}
