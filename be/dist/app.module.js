@@ -15,6 +15,7 @@ const app_service_1 = require("./app.service");
 const users_module_1 = require("./modules/users/users.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const supabase_module_1 = require("./modules/supabase/supabase.module");
+const socket_module_1 = require("./modules/socket/socket.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -42,6 +43,7 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             supabase_module_1.SupabaseModule,
+            socket_module_1.SocketModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
