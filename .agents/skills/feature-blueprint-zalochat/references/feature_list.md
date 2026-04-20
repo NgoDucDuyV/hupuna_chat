@@ -3,19 +3,19 @@
 | STT | Phân Quyền | Nhóm Chức Năng | Chức Năng | Mô Tả | Yêu Cầu Dự Án |
 |-----|------------|----------------|-----------|-------|---------------|
 | 1 | | **🔐 Authentication & Access** | | | |
-| 2 | All | Authentication | Login via QR Code | Quét mã QR từ điện thoại để đăng nhập không cần mật khẩu | Bắt buộc |
-| 3 | All | Authentication | Login via Phone/Pass | Đăng nhập bằng SĐT và mật khẩu | Bắt buộc |
-| 4 | All | Authentication | OTP Verification | Xác thực đăng nhập trên thiết bị lạ qua mã OTP (SMS/Zalo) | Bắt buộc |
-| 5 | All | Authentication | Two-Factor Auth | Bảo mật 2 lớp khi thực hiện các thay đổi quan trọng | Bắt buộc |
-| 6 | All | Authentication | Change Password | Thay đổi mật khẩu người dùng | Bắt buộc |
-| 7 | All | Authentication | Forgot Password | Khôi phục mật khẩu qua SĐT đã đăng ký | Bắt buộc |
-| 8 | All | Authentication | Device Management | Xem danh sách thiết bị đang đăng nhập và đăng xuất từ xa | Bắt buộc |
+| 2 | User | Authentication | Register via Email/Phone | Đăng ký tài khoản bằng Email hoặc Số điện thoại | Bắt buộc |
+| 3 | User | Authentication | OTP Verification | Xác thực đăng ký/đăng nhập bằng mã OTP qua Email/SĐT | Bắt buộc |
+| 4 | Admin | Authentication | Account Approval | Admin duyệt và kích hoạt tài khoản thì mới được đăng nhập | Bắt buộc |
+| 5 | User | Authentication | Login | Đăng nhập hệ thống (chỉ cho phép sau khi Admin duyệt) | Bắt buộc |
+| 6 | User | Authentication | Two-Factor Auth | Cấu hình bảo mật 2 lớp (2FA) | Bắt buộc |
+| 7 | User | Authentication | Change & Forgot Password | Đổi và khôi phục mật khẩu (có xác thực OTP) | Bắt buộc |
+| 8 | User | Authentication | Device Management | Quản lý phiên làm việc, đăng xuất từ xa | Bắt buộc |
 | 9 | | **👤 User Profile & Identity** | | | |
-| 10 | User | User Profile | View Profile | Xem thông tin cá nhân (Tên, SĐT, Ngày sinh, Giới tính) | Bắt buộc |
-| 11 | User | User Profile | Edit Profile | Cập nhật tên, ảnh đại diện, ảnh bìa (Cover) | Bắt buộc |
-| 12 | User | User Profile | Update Status | Đăng trạng thái (Bio) ngắn gọn | Bắt buộc |
-| 13 | User | User Profile | QR Code Cá nhân | Mã QR để người khác quét và kết bạn nhanh | Bắt buộc |
-| 14 | User | User Profile | Privacy Settings | Cài đặt quyền riêng tư: ai có thể nhắn tin, xem nhật ký | Bắt buộc |
+| 10 | User | User Profile | View Profile | Xem thông tin hồ sơ nhân sự (Phòng ban, chức vụ, SĐT) | Bắt buộc |
+| 11 | User | User Profile | Edit Profile | Cập nhật một số thông tin cơ bản (Avatar, châm ngôn) | Bắt buộc |
+| 12 | User | User Profile | Update Status | Đăng trạng thái (Đang họp, Vắng mặt, Online) | Bắt buộc |
+| 13 | Admin | User Profile | Employee Directory | Danh bạ toàn công ty, cấp bậc, sơ đồ tổ chức | Bắt buộc |
+| 14 | User | User Profile | Privacy Settings | Tùy chỉnh nhận tin nhắn từ người ngoài phòng ban | Bắt buộc |
 | 15 | | **💬 Chat 1-1 (Core Engine)** | | | |
 | 16 | User | Chat 1-1 | Send Text/Emoji | Gửi tin nhắn văn bản và biểu cảm | Bắt buộc |
 | 17 | User | Chat 1-1 | Stickers System | Hệ thống sticker phong phú, có thể tải thêm từ store | Bắt buộc |
@@ -86,9 +86,13 @@
 | 82 | System | Infrastructure | Redis Pub/Sub | Đảm bảo tính realtime giữa các server instances | Bắt buộc |
 | 83 | System | Security | End-to-End Encryption | Mã hóa đầu cuối cho tin nhắn bí mật | Mở rộng |
 | 84 | System | Database | SQL + NoSQL | Sử dụng PostgreSQL (Auth/Contacts) và MongoDB (Messages) | Bắt buộc |
-| 85 | | **📊 Admin Dashboard (Backoffice)** | | | |
-| 86 | Admin | Analytics | User Growth | Thống kê lượng đăng ký, active người dùng | Bắt buộc |
-| 87 | Admin | Analytics | Message Traffic | Theo dõi lưu lượng tin nhắn theo thời gian thực | Bắt buộc |
-| 88 | Admin | Management | Content Moderation | Quản lý và xử lý các báo cáo vi phạm | Bắt buộc |
-| 89 | Admin | Management | Global Notification | Gửi thông báo hệ thống đến tất cả người dùng | Bắt buộc |
-| 90 | Admin | Management | App Health | Theo dõi trạng thái uptime của server/database | Bắt buộc |
+| 85 | | **📊 Admin Dashboard (Internal Company Management)** | | | |
+| 86 | Admin | User Management | Account Verification | Kiểm duyệt, kích hoạt, từ chối tài khoản nhân viên đăng ký mới | Bắt buộc |
+| 87 | Admin | User Management | Role & Departments | Tạo phòng ban, gán chức vụ và phân quyền (RBAC) | Bắt buộc |
+| 88 | Admin | User Management | Status Control | Vô hiệu hóa/Đóng băng tài khoản nhân sự nghỉ việc | Bắt buộc |
+| 89 | Admin | Content Moderation | Chat & File Tracking | Cảnh báo/Giám sát từ khóa nhạy cảm, file chia sẻ vi phạm | Bắt buộc |
+| 90 | Admin | System Alert | Global Broadcasting | Gửi thông báo khẩn cấp/Global Announcement toàn công ty | Bắt buộc |
+| 91 | Admin | Security | Audit Logs | Ghi System Log toàn bộ hoạt động đăng nhập, sửa quyền, tải file | Bắt buộc |
+| 92 | Admin | Analytics | Employee Engagement | Thống kê số lượng tin nhắn, hoạt động tương tác phòng ban | Bắt buộc |
+| 93 | Admin | Integration | Directory Sync | Đồng bộ tài khoản qua LDAP/Google Workspace | Mở rộng |
+| 94 | Admin | Settings | App Configurations | Quản lý dung lượng lưu trữ tối đa (Quota), giới hạn tính năng | Bắt buộc |

@@ -338,7 +338,7 @@ function TextBubble({
 function MessageArea() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [showScrollDown, setShowScrollDown] = useState(false)
-
+  
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return

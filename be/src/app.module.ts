@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SupabaseModule } from './modules/supabase/supabase.module';
+import { SocketModule } from './modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SupabaseModule } from './modules/supabase/supabase.module';
     UsersModule,
     AuthModule,
     SupabaseModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
